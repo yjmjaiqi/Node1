@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>撰写文章</title>
+
+<link rel="stylesheet" href="/css/article.css">
+<link rel="stylesheet" href="/css/indexs.css">
+
+</head>
+<body  style="background-color: plum;">
+	<div id="logo">
+		<a href="indexs"><img style="margin-left: 10px;" src="/img/logo.png" alt="" title="" /></a>
+	</div>
+	<aside>
+		<section class="main-aside-avatar">
+			<img src="/img/a.jpg" alt="">
+		</section>
+		<ul>
+			<li><a href="about">关于</a></li>
+			<li><a href="indexs">撰写文章</a></li>
+			<li><a href="article">文章列表</a></li>
+			<li><a href="contact">联系</a></li>
+			<li><a href="single">个人信息页</a></li>
+			<li><a href="backstage">后台管理系统</a></li>
+			<li><a href="exitLogin">退出登录</a></li>
+		</ul>
+	</aside>	
+	<section class="main-articles" >
+		<form action="/indexs" method="post" class="edit">
+			<div class="form-group">
+				<label for="">文章名称</label>
+				<input type="text" name="name">
+			</div><br>
+			<div class="form-group">
+				<label for="">发布作者</label>
+				<input type="text" name="author">
+			</div><br>
+			<div class="text-group">
+				<label for="">发布内容</label>
+				<textarea type="text" name="Content"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="">发布时间</label>
+				<input type="text" name="time">
+			</div><br>
+			<p><input type="submit" value="发布"></p>
+		</form>
+	</section>			
+<script src="/js/article.js"></script>
+
+</body>
+</html>

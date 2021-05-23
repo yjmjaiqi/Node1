@@ -1,0 +1,6 @@
+.mui-input-group{width: 80%;margin:10vh auto; height: 70vh; background-color:rgba(0,0,0,0.3);padding-top:1rem; border-radius: 10px;}
+.mui-text-center{margin-top: 5vh;color: #FFFFFF;}
+.mui-input-row{ width: 95%;margin-top: 5vh; color: white;}
+.mui-btn-block{cursor: pointer;padding: 0;width: 50%; margin:2rem auto;height:2.5rem;font-size: 0.85rem;background-color:rgba(0,0,0,0.3); color: white; letter-spacing: 5px;}
+.myfooter p{float: left;margin-left: 28%;color: white;}
+.myfooter p:hover{color: #000000;cursor: pointer; text-decoration: underline;}

@@ -1,0 +1,62 @@
+aside{
+    width: 180px;
+    padding: 9px;
+    border: 1px solid #c0c0c0;
+    float: left;
+    min-height: 450px;
+    height: 100%;
+}
+aside ul li{
+    list-style: none;
+    height: 30px;
+    text-align: center;
+}
+aside ul li a{
+    font-size: 16px;
+    line-height: 30px;
+}
+aside ul li a:hover{
+    color: #183D8E;
+}
+.main-aside-avatar{
+    margin-bottom: 10px;
+}
+.main-aside-avatar img{
+    width: 100%;
+}
+.main-articles{
+    margin-left: 220px;
+}
+.edit lable,.editp lable{
+    width: 10%;
+    text-align: right;
+    display: inline-block;
+}
+.edit input,.edit textarea{
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+    width: 85%;
+    padding: 6px,5px;
+    margin-left: 20px;
+}
+.edit p{
+    text-align: center;
+}
+.edit input[type="submit"] {
+    width: 90px;
+    height: 40px;
+    background: #183D8E;
+    color: #fff;
+    cursor: pointer;
+}
+.form-group input{
+    height: 24px;
+}
+.text-group textarea{
+    height: 300px;
+}
+.text-group lable{
+    vertical-align: top;
+    position: absolute; top: 198px;left: 218px;
+}
+

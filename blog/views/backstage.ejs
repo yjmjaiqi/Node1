@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>后台管理系统</title>
+
+<link rel="stylesheet" href="/css/article.css">
+
+</head>
+<body style="background-color:powderblue;">
+				<div id="logo">
+					<a href="indexs"><img src="/img/logo.png" alt="" title="" /></a>
+				</div>
+				<center>
+					<div style="font-size:50px;">后台管理系统</div>
+						<a href="about">关于</a>
+						<a href="indexs">撰写文章</a>
+						<a href="article">文章列表</a>
+						<a href="contact">联系</a>
+						<a href="single">个人信息页</a>
+						<a href="backstage">后台管理系统</a>
+						<a href="exitLogin">退出登录</a><br><br>
+						<form action="/backstage" method="post">
+						<input type="text" name="articlename" placeholder="查询文章名">
+						<input type="submit" value="查询">
+					    </form>
+				</center>
+<table class="join_zp" cellpadding="0" cellspacing="0">
+	<thead>
+		<tr class="join_con">
+			<center>
+			<td colspan="6"><button><a href="indexs">增加</a></button></td>
+		    </center>
+		</tr>
+	<tr class="join_zp_t">
+		<td>文章编号</td>
+		<td>文章名称</td>
+		<td>发布人</td>
+		<td>发布内容</td>
+		<td>发布时间</td>
+		<td colspan="1">编辑</td>
+	</tr>
+    </thead>
+	
+	<tbody class="join_con">
+		<% for(let o of data){ %>
+		<tr class="join_zp_c">
+			<td><%=o.articleId%></td>
+			<td><%=o.articleName%></td>
+			<td><%=o.author%></td>
+			<td><%=o.articleContent%></td>
+			<td><%=o.create_time%></td>
+			<td><button data-id=<%=o.articleId %> class="del">删除</button><button data-id=<%=o.articleId %> class="alt">修改</button></td>
+		</tr>
+		<% } %>
+	</tbody>
+	<thead>
+		<tr class="join_zp_t">
+			<center>
+				<td colspan="6">默认为一条数据</td>
+			</center>
+		</tr>
+	</thead>
+</table>
+<script>
+	Array.from(document.getElementsByClassName("alt")).forEach(i => {
+    i.onclick = function(){
+        let i = this.getAttribute("data-id");
+        window.location.href = '/backstage/'+i;
+    }
+})
+Array.from(document.getElementsByClassName("del")).forEach(i => {
+    i.onclick = function(){
+        let i = this.getAttribute("data-id");
+        window.location.href = '/del/'+i;
+    }
+})
+</script>
+<script src="/js/article.js"></script>
+</body>
+</html>
