@@ -20,6 +20,9 @@ router.get('/', function(req, res, next) {
 router.get('/index', function(req, res, next) {
   res.render('index');
 });
+router.get('/display',(req,res)=>{
+  res.render('display');
+})
 router.get('/login', function(req, res, next) {
   res.render('login');
 });
@@ -84,7 +87,22 @@ router.get('/del/:id',(req,res)=>{
 })
 router.get('/backstage/:id',(req,res)=>{
   pas = req.params.id;
-  res.render('uppage');
+  db.query("select * from article where articleId='"+req.params.id+"'",(err,result,field)=>{
+    console.log(result);
+    res.render('uppage',{
+      arr:result
+    });
+  })
+})
+router.get('/article/:id',(req,res)=>{
+  console.log(req.params.id)
+  var sql = "select articleContent from article where articleId='"+req.params.id+"'";
+  db.query(sql,(err,result,fields)=>{
+      console.log(result);
+      res.render('display',{
+        content:result
+      })
+    })
 })
 router.post('/uppage',(req,res)=>{
   var name = req.body.name;
@@ -118,8 +136,6 @@ router.post('/uppage',(req,res)=>{
   }
 })
 
-
-
 router.post('/indexs',(req, res)=>{
   var name = req.body.name;
   var author = req.body.author;
@@ -135,10 +151,8 @@ router.post('/indexs',(req, res)=>{
   console.log(param);
   db.query(sql,param,(err,results,fields)=>{
     console.log(results);
-    if(results!=""){
+    if(results!=''){
     res.redirect('/article');
-    }else {
-      res.render('indexs');
     }
   })
 });
@@ -156,12 +170,13 @@ router.get('/article',(req,res)=>{
   db.query(sql,(err,result,fields)=>{
       console.log(result)
     res.render('article',{
-      arr:result
+      arr:result,
+      content:"",
+      fail:""
     });
     })
   
 })
-
 
 router.post("/alter",(req,res)=>{
   var username = md5(req.body.username);

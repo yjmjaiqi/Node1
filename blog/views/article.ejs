@@ -41,21 +41,25 @@
 				<td><%=o.author%></td>
 				<td><%=o.articleContent%></td>
 				<td><%=o.create_time%></td>
-				<td><button>详情</button></td>
+				<td><button data-id=<%=o.articleId %> class="read">阅读</button></td>
 		</tr>
 		<% } %>
 	</tbody>
 	<tfoot class="join_zp_t">
 		<tr>
-			<td><button>上一页</button></td>
-			<td><button>下一页</button></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td colspan="3"><button>上一页</button></td>
+			<td colspan="3"><button>下一页</button></td>
 		</tr>
 	</tfoot>
 </table>
+<script>
+	Array.from(document.getElementsByClassName("read")).forEach(i => {
+    i.onclick = function(){
+        let i = this.getAttribute("data-id");
+        window.location.href = '/article/'+i;
+    }
+})
+</script>
 <script src="/js/article.js"></script>
 
 </body>

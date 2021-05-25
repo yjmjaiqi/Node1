@@ -51,14 +51,14 @@
 			<td><%=o.author%></td>
 			<td><%=o.articleContent%></td>
 			<td><%=o.create_time%></td>
-			<td><button data-id=<%=o.articleId %> class="del">删除</button><button data-id=<%=o.articleId %> class="alt">修改</button></td>
+			<td><button data-id=<%=o.articleId %> class="read">阅读</button><button data-id=<%=o.articleId %> class="del">删除</button><button data-id=<%=o.articleId %> class="alt">修改</button></td>
 		</tr>
 		<% } %>
 	</tbody>
 	<thead>
-		<tr class="join_zp_t">
+		<tr class="join_zp_t" style="color: gray;">
 			<center>
-				<td colspan="6">默认为一条数据</td>
+				<td colspan="6">默认数据</td>
 			</center>
 		</tr>
 	</thead>
@@ -74,6 +74,12 @@ Array.from(document.getElementsByClassName("del")).forEach(i => {
     i.onclick = function(){
         let i = this.getAttribute("data-id");
         window.location.href = '/del/'+i;
+    }
+})
+Array.from(document.getElementsByClassName("read")).forEach(i => {
+    i.onclick = function(){
+        let i = this.getAttribute("data-id");
+        window.location.href = '/article/'+i;
     }
 })
 </script>
