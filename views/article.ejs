@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="/css/article.css">
 
 </head>
-<body style="background-color:gray;">
+<body>
 				<div id="logo">
 					<a href="indexs"><img src="/img/logo.png" alt="" title="" /></a>
 				</div>
@@ -39,7 +39,7 @@
 				<td><%=o.articleId%></td>
 				<td><%=o.articleName%></td>
 				<td><%=o.author%></td>
-				<td><%=o.articleContent%></td>
+				<td><input value=<%=o.articleContent%> readonly></td>
 				<td><%=o.create_time%></td>
 				<td><button data-id=<%=o.articleId %> class="read">阅读</button></td>
 		</tr>
@@ -47,18 +47,35 @@
 	</tbody>
 	<tfoot class="join_zp_t">
 		<tr>
-			<td colspan="3"><button>上一页</button></td>
-			<td colspan="3"><button>下一页</button></td>
+			<td colspan="1"><button>上一页</button></td>
+			<%for(let a of counts){%>
+			<td >共<%=a.amounts%>条数据</td>
+			
+			<td ><%=page%>页</td>
+			<%}%>
+			<td colspan="1"><button>下一页</button></td>
+			<td>前往第<input type="text" id="goes">页</td>
+			<td><button onclick="aa()">确定</button></td>
+			
 		</tr>
 	</tfoot>
 </table>
+<img src="/img/about-img.png">
+<!-- <td colspan="2">前往第<input type="text" onclick="aa()" id="goes">页</td> -->
 <script>
-	Array.from(document.getElementsByClassName("read")).forEach(i => {
+Array.from(document.getElementsByClassName("read")).forEach(i => {
     i.onclick = function(){
         let i = this.getAttribute("data-id");
-        window.location.href = '/article/'+i;
+        window.location.href = '/article/page/'+i;
     }
 })
+function aa(){
+let a = document.getElementById("goes").value;
+if(a!=""){
+	window.location.href = '/article/'+a;
+}
+}
+
 </script>
 <script src="/js/article.js"></script>
 

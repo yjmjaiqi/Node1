@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>撰写文章</title>
+
+<link rel="stylesheet" href="/css/article.css">
+<link rel="stylesheet" href="/css/indexs.css">
+
+</head>
+<body  style="background-color:white;">
+	<div id="logo">
+		<a href="indexs"><img style="margin-left: 10px;" src="/img/logo.png" alt="" title="" /></a>
+	</div>
+	<aside>
+		<section class="main-aside-avatar">
+			<img src="/img/a.jpg" alt=""><br><br><br>
+            <center><button style="font-size: 30px;"><a href="../backstage">返回</a></button></center>
+		</section>
+	</aside>	
+	<section class="main-articles" >
+		<form action="" method="post" class="edit">
+			<%for(let o of arr){%>
+			<div class="form-group">
+				<label for="">name &ensp;&ensp;&ensp;</label>
+				<input type="text" name="name" value=<%=o.name %>>
+			</div><br>
+			<div class="form-group">
+				<label for="">email &ensp;&ensp;&ensp;</label>
+				<input type="text" name="author" value=<%=o.email %>>
+			</div><br>
+			<div class="text-group">
+				<label for="">subject &ensp;</label>
+				<input type="text" name="time" value=<%=o.subject %>>
+			</div><br>
+			<div class="form-group">
+				<label for="">message</label>
+                <textarea type="text" name="message"><%=o.message%></textarea>
+			</div><br>
+            <hr><br>
+			<%}%>
+		</form>
+	</section>			
+<script src="/js/article.js"></script>
+
+</body>
+</html>

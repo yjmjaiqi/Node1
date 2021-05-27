@@ -17,6 +17,7 @@ router.use(session({
 router.get('/', function(req, res, next) {
   res.render('index');
 });
+//首页
 router.get('/index', function(req, res, next) {
   res.render('index');
 });
@@ -29,19 +30,18 @@ router.get('/login', function(req, res, next) {
 router.get('/alter', function(req, res, next) {
   res.render('alter');
 });
-router.get('/contact',(req,res)=>{
-  res.render('contact');
-})
+//撰写文章
 router.get('/indexs', function(req, res, next) {
   res.render('indexs')
 });
-
+//后台管理
 router.get('/backstage',(req,res)=>{
   db.query("select * from article limit 1",(err,results,fields)=>{
     console.log(results);
     if(results!=""){
     res.render('backstage',{
-      data:results
+      data:results,
+      messages:"暂无新消息"
     })
   }else {
     console.log(err)
@@ -53,7 +53,8 @@ router.post('/backstage',(req,res)=>{
     console.log(results);
     if(results!=""){
     res.render('backstage',{
-      data:results
+      data:results,
+      messages:"暂无新消息"
     })
   }else {
     console.log(err)
@@ -62,6 +63,7 @@ router.post('/backstage',(req,res)=>{
 })
 let pas;
 let pasm;
+//删除
 router.get('/del/:id',(req,res)=>{
   pasm = req.params.id;
   console.log(pasm)
@@ -71,7 +73,12 @@ router.get('/del/:id',(req,res)=>{
     db.query(sqls,(err,result,field)=>{
       if(result!=""){
         console.log(result);
-        res.redirect('/backstage');
+        res.render('info',{
+          title:"删除成功",
+          content:"",
+          href:"../backstage",
+          hrefText:"后台管理页"
+        })
       }else {
         res.render('info',{
           title:"删除失败",
@@ -85,8 +92,10 @@ router.get('/del/:id',(req,res)=>{
  
   
 })
+//修改
 router.get('/backstage/:id',(req,res)=>{
   pas = req.params.id;
+  console.log(req.params.id)
   db.query("select * from article where articleId='"+req.params.id+"'",(err,result,field)=>{
     console.log(result);
     res.render('uppage',{
@@ -94,7 +103,8 @@ router.get('/backstage/:id',(req,res)=>{
     });
   })
 })
-router.get('/article/:id',(req,res)=>{
+//阅读
+router.get('/article/page/:id',(req,res)=>{
   console.log(req.params.id)
   var sql = "select articleContent from article where articleId='"+req.params.id+"'";
   db.query(sql,(err,result,fields)=>{
@@ -104,6 +114,42 @@ router.get('/article/:id',(req,res)=>{
       })
     })
 })
+// 分页 暂未完成
+router.get('/article/:id',(req,res)=>{
+  $limi = req.params.id;
+  $limit = $limi-1;
+  console.log($limi);
+  console.log($limit);
+  var counts;
+  var page;
+  var sqls = 'select count(*) amounts from article';
+  db.query(sqls,(err,results,fields)=>{
+    counts=results;
+    for(let c of results){
+      page=Math.ceil(c.amounts/2);
+    }
+  })
+  var sql = "select * from article limit '"+$limi+"',2";
+  db.query(sql,(err,result,fields)=>{
+      console.log(result)
+      if(result!=""){
+        res.render('article',{
+          arr:result,
+          page:page,
+          counts:counts
+        })
+      }else {res.redirect('../article')}
+    })
+})
+//读取信息
+router.get('/read',(req,res)=>{
+  db.query("select * from contact order by id desc",(err,result,field)=>{
+    res.render('read',{
+      arr:result
+    })
+  })
+})
+//修改
 router.post('/uppage',(req,res)=>{
   var name = req.body.name;
   var author = req.body.author;
@@ -121,7 +167,12 @@ router.post('/uppage',(req,res)=>{
      db.query(sql,param,(err,results,fields)=>{
     if(results!=""){
       console.log(results);
-      res.redirect('/backstage');
+      res.render('info',{
+        title:"修改成功",
+        content:"即将进入后台管理页",
+        href:"../backstage",
+        hrefText:"后台管理页"
+       })
     }else {
       console.log(err);
     }
@@ -135,7 +186,7 @@ router.post('/uppage',(req,res)=>{
     })
   }
 })
-
+//撰写文章
 router.post('/indexs',(req, res)=>{
   var name = req.body.name;
   var author = req.body.author;
@@ -152,11 +203,16 @@ router.post('/indexs',(req, res)=>{
   db.query(sql,param,(err,results,fields)=>{
     console.log(results);
     if(results!=''){
-    res.redirect('/article');
+      res.render('info',{
+        title:"发布成功",
+        content:"",
+        href:"../indexs",
+        hrefText:""
+    });
     }
   })
 });
-
+//退出登录
 router.get('/exitLogin',(req,res)=>{
   res.render('info',{
     title:"退出登录成功",
@@ -165,19 +221,28 @@ router.get('/exitLogin',(req,res)=>{
     hrefText:"登录页"
    })
 })
+//文章列表
 router.get('/article',(req,res)=>{
+  var counts;
+  var page;
+  var sqls = 'select count(*) amounts from article';
+  db.query(sqls,(err,results,fields)=>{
+    counts=results;
+    for(let c of results){
+      page=Math.ceil(c.amounts/2);
+    }
+  })
   var sql = "select * from article order by articleId desc limit 2";
   db.query(sql,(err,result,fields)=>{
       console.log(result)
     res.render('article',{
       arr:result,
-      content:"",
-      fail:""
+      page:page,
+      counts:counts
     });
     })
-  
 })
-
+//修改密码
 router.post("/alter",(req,res)=>{
   var username = md5(req.body.username);
   var password = md5(req.body.password);
@@ -206,7 +271,7 @@ router.post("/alter",(req,res)=>{
       )}
   })
 })
-
+//登录
 router.post('/login',(req,res)=>{
   req.session.username=req.body.username;
   req.session.password=req.body.password;
@@ -238,6 +303,7 @@ router.post('/login',(req,res)=>{
       )}
   })
 })
+//注册
 router.post('/register',(req,res)=>{
   // 获取请求数据
   var username = md5(req.body.username);
@@ -284,6 +350,7 @@ router.post('/register',(req,res)=>{
     }
   })
 })
+//个人
 router.get('/single',(req,res)=>{
   var user = md5(req.session.username)
   db.query("select phone,email from user where username=?",[user],(err,result,fields)=>{
@@ -295,5 +362,32 @@ router.get('/single',(req,res)=>{
     });
   })
  
+})
+//联系
+router.post('/mail',(req,res)=>{
+  var name = req.body.name;
+  var email = req.body.email;
+  var subject = req.body.subject;
+  var message = req.body.message;
+  var params = [
+    name,
+    email,
+    subject,
+    message
+  ]
+  db.query("select * from article limit 1",(err,results,fields)=>{
+    console.log(results);
+    if(results!=""){
+    res.render('backstage',{
+      data:results,
+      messages:"有新消息啦"
+    })
+  }else {
+    console.log(err)
+  }
+  })
+  
+  db.query("insert into contact(name,email,subject,message) values(?,?,?,?)",params,(err,results,fields)=>{
+  })
 })
 module.exports = router;
