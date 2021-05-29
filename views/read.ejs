@@ -17,6 +17,7 @@
 		<section class="main-aside-avatar">
 			<img src="/img/a.jpg" alt=""><br><br><br>
             <center><button style="font-size: 30px;"><a href="../backstage">返回</a></button></center>
+			<center>共<%-amount%>条消息</center>
 		</section>
 	</aside>	
 	<section class="main-articles" >
@@ -24,21 +25,21 @@
 			<%for(let o of arr){%>
 			<div class="form-group">
 				<label for="">name &ensp;&ensp;&ensp;</label>
-				<input type="text" name="name" value=<%=o.name %>>
+				<input type="text" name="name" readonly value=<%=o.name %>>
 			</div><br>
 			<div class="form-group">
 				<label for="">email &ensp;&ensp;&ensp;</label>
-				<input type="text" name="author" value=<%=o.email %>>
+				<input type="text" name="author" readonly value=<%=o.email %>>
 			</div><br>
 			<div class="text-group">
 				<label for="">subject &ensp;</label>
-				<input type="text" name="time" value=<%=o.subject %>>
+				<input type="text" name="time" readonly value=<%=o.subject %>>
 			</div><br>
 			<div class="form-group">
 				<label for="">message</label>
-                <textarea type="text" name="message"><%=o.message%></textarea>
+                <textarea type="text" name="message" readonly><%=o.message%></textarea>
 			</div><br>
-            <hr><br>
+            <hr style="background-color: crimson;"><br>
 			<%}%>
 		</form>
 	</section>			

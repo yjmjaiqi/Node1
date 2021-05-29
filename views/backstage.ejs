@@ -6,9 +6,13 @@
 <title>后台管理系统</title>
 
 <link rel="stylesheet" href="/css/article.css">
-
+<style type="text/css">
+	a{
+		text-decoration: none;
+	}
+</style>
 </head>
-<body style="background-color:powderblue;">
+<body>
 				<div id="logo">
 					<a href="indexs"><img src="/img/logo.png" alt="" title="" /></a>
 				</div>
@@ -49,7 +53,7 @@
 			<td><%=o.articleId%></td>
 			<td><%=o.articleName%></td>
 			<td><%=o.author%></td>
-			<td><input value=<%=o.articleContent%> readonly></td>
+			<td><input style="border-style: hidden;" value=<%=o.articleContent%> readonly></td>
 			<td><%=o.create_time%></td>
 			<td><button data-id=<%=o.articleId %> class="read">阅读</button><button data-id=<%=o.articleId %> class="del">删除</button><button data-id=<%=o.articleId %> class="alt">修改</button></td>
 		</tr>

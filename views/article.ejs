@@ -6,20 +6,24 @@
 <title>文章列表</title>
 
 <link rel="stylesheet" href="/css/article.css">
-
+<style type="text/css">
+	a{
+		text-decoration: none;
+	}
+</style>
 </head>
 <body>
 				<div id="logo">
 					<a href="indexs"><img src="/img/logo.png" alt="" title="" /></a>
 				</div>
 				<center>
-						<a href="about">关于</a>
-						<a href="indexs">撰写文章</a>
-						<a href="article">文章列表</a>
-						<a href="contact">联系</a>
-						<a href="single">个人信息页</a>
-						<a href="backstage">后台管理系统</a>
-						<a href="exitLogin">退出登录</a>
+						<a href="../about">关于</a>
+						<a href="../indexs">撰写文章</a>
+						<a href="../article">文章列表</a>
+						<a href="../contact">联系</a>
+						<a href="../single">个人信息页</a>
+						<a href="../backstage">后台管理系统</a>
+						<a href="../exitLogin">退出登录</a>
 				</center>
 <table class="join_zp" cellpadding="0" cellspacing="0">
 	<thead>
@@ -39,7 +43,7 @@
 				<td><%=o.articleId%></td>
 				<td><%=o.articleName%></td>
 				<td><%=o.author%></td>
-				<td><input value=<%=o.articleContent%> readonly></td>
+				<td><input style="border-style: hidden;" value=<%=o.articleContent%> readonly></td>
 				<td><%=o.create_time%></td>
 				<td><button data-id=<%=o.articleId %> class="read">阅读</button></td>
 		</tr>
@@ -47,15 +51,12 @@
 	</tbody>
 	<tfoot class="join_zp_t">
 		<tr>
-			<td colspan="1"><button>上一页</button></td>
 			<%for(let a of counts){%>
-			<td >共<%=a.amounts%>条数据</td>
-			
-			<td ><%=page%>页</td>
+			<td colspan="2">共<%=a.amounts%>条数据</td>
+			<td colspan="2">前往第<input type="text" id="goes">页<button onclick="aa()">确定</button></td>
+			<td colspan="2">共<%=page%>页</td>
 			<%}%>
-			<td colspan="1"><button>下一页</button></td>
-			<td>前往第<input type="text" id="goes">页</td>
-			<td><button onclick="aa()">确定</button></td>
+            
 			
 		</tr>
 	</tfoot>

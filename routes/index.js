@@ -4,6 +4,7 @@ var router = express.Router();
 const session = require('express-session');
 var db = require('../mysql/mysql');
 var md5 = require('md5');
+var flash = require('flash');
 router.use(session({
   secret:'sessiontest',
   resave:true,//强制保存session
@@ -12,6 +13,7 @@ router.use(session({
   },
   saveUninitialized:true//强制保存初始化session
 }))
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -32,10 +34,15 @@ router.get('/alter', function(req, res, next) {
 });
 //撰写文章
 router.get('/indexs', function(req, res, next) {
-  res.render('indexs')
+  console.log(req.session.username);
+  if(req.session.username!=undefined){
+  res.render('indexs');
+  }else res.redirect('/login')
 });
 //后台管理
 router.get('/backstage',(req,res)=>{
+  console.log(req.session.username)
+  if(req.session.username!=undefined){
   db.query("select * from article limit 1",(err,results,fields)=>{
     console.log(results);
     if(results!=""){
@@ -47,6 +54,7 @@ router.get('/backstage',(req,res)=>{
     console.log(err)
   }
   })
+}else res.redirect('/login')
 })
 router.post('/backstage',(req,res)=>{
   db.query("select * from article where articleName like '%" + req.body.articlename +"%'",(err,results,fields)=>{
@@ -114,22 +122,27 @@ router.get('/article/page/:id',(req,res)=>{
       })
     })
 })
-// 分页 暂未完成
+//分页
 router.get('/article/:id',(req,res)=>{
-  $limi = req.params.id;
-  $limit = $limi-1;
-  console.log($limi);
-  console.log($limit);
+  var current_page = req.params.id;
+  var num =3;
+  console.log(current_page);
   var counts;
   var page;
   var sqls = 'select count(*) amounts from article';
   db.query(sqls,(err,results,fields)=>{
     counts=results;
     for(let c of results){
-      page=Math.ceil(c.amounts/2);
+      page=Math.ceil(c.amounts/3);
     }
   })
-  var sql = "select * from article limit '"+$limi+"',2";
+  //offset实现分页
+  if(req.params.id>page){
+    res.redirect('../article');
+  }else if(req.params.id<1){
+    res.redirect('../article');
+  }else {
+  var sql = "select * from article limit " + num + ' offset ' + num * (current_page - 1);
   db.query(sql,(err,result,fields)=>{
       console.log(result)
       if(result!=""){
@@ -137,16 +150,23 @@ router.get('/article/:id',(req,res)=>{
           arr:result,
           page:page,
           counts:counts
-        })
+        });
       }else {res.redirect('../article')}
     })
+  }
 })
+
 //读取信息
 router.get('/read',(req,res)=>{
   db.query("select * from contact order by id desc",(err,result,field)=>{
-    res.render('read',{
-      arr:result
-    })
+    db.query("select count(*) amount from contact",(err,results,fields)=>{
+      for(let o of results){
+        res.render('read',{
+          arr:result,
+          amount:o.amount
+        })
+      }
+  })
   })
 })
 //修改
@@ -223,16 +243,18 @@ router.get('/exitLogin',(req,res)=>{
 })
 //文章列表
 router.get('/article',(req,res)=>{
+  console.log(req.session.username);
+  if(req.session.username!=undefined){
   var counts;
   var page;
   var sqls = 'select count(*) amounts from article';
   db.query(sqls,(err,results,fields)=>{
     counts=results;
     for(let c of results){
-      page=Math.ceil(c.amounts/2);
+      page=Math.ceil(c.amounts/3);
     }
   })
-  var sql = "select * from article order by articleId desc limit 2";
+  var sql = "select * from article order by articleId limit 3";
   db.query(sql,(err,result,fields)=>{
       console.log(result)
     res.render('article',{
@@ -241,6 +263,7 @@ router.get('/article',(req,res)=>{
       counts:counts
     });
     })
+  }else res.redirect('/login')
 })
 //修改密码
 router.post("/alter",(req,res)=>{
@@ -277,6 +300,7 @@ router.post('/login',(req,res)=>{
   req.session.password=req.body.password;
   req.session.phone=req.body.phone;
   req.session.email=req.body.email;
+  console.log(req.session.username)
   var username = md5(req.body.username);
   var password = md5(req.body.password);
   var paramse = [
@@ -352,6 +376,8 @@ router.post('/register',(req,res)=>{
 })
 //个人
 router.get('/single',(req,res)=>{
+  console.log(req.session.username)
+  if(req.session.username!=undefined){
   var user = md5(req.session.username)
   db.query("select phone,email from user where username=?",[user],(err,result,fields)=>{
     console.log(result)
@@ -361,7 +387,7 @@ router.get('/single',(req,res)=>{
       arr:result
     });
   })
- 
+}else res.redirect('/login')
 })
 //联系
 router.post('/mail',(req,res)=>{

@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+const session = require('express-session');
 
 
 var indexRouter = require('./routes/index');
@@ -20,6 +20,14 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(session({
+  secret:'sessiontest',
+  resave:true,//强制保存session
+  cookie:{
+    maxAge:7*24*60*60*1000,//设置session有效期为一周
+  },
+  saveUninitialized:true//强制保存初始化session
+}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
